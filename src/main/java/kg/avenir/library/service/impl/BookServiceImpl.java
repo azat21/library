@@ -1,25 +1,23 @@
 package kg.avenir.library.service.impl;
 
 import com.querydsl.core.BooleanBuilder;
-import kg.avenir.library.dto.author.AuthorDto;
 import kg.avenir.library.dto.book.BookDto;
 import kg.avenir.library.dto.book.UpdateBookQuantityDto;
 import kg.avenir.library.entity.Author;
 import kg.avenir.library.entity.Book;
 import kg.avenir.library.entity.QBook;
+import kg.avenir.library.entity.Student;
 import kg.avenir.library.filterRequest.book.BookFilterRequest;
 import kg.avenir.library.mapper.BookMapper;
 import kg.avenir.library.repository.BookRepository;
 import kg.avenir.library.service.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -34,21 +32,18 @@ public class BookServiceImpl implements BookService {
         this.bookMapper = bookMapper;
     }
 
+
     @Override
-    @Transactional
-    public void updateQuantity(Long id, UpdateBookQuantityDto dto) {
+    public void updateQuantity(Long id, Integer quantity) {
         Book updatingBook = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("There is no Book with id " + id));
-        updatingBook.setQuantity(dto.getQuantity());
+        updatingBook.setQuantity(quantity);
         bookRepository.save(updatingBook);
     }
 
     @Override
-    public List<BookDto> findAll() {
-        return bookRepository.findAll()
-                .stream()
-                .map(bookMapper::toDto)
-                .collect(Collectors.toList());
+    public List<Book> findAll() {
+        return bookRepository.findAll();
     }
 
     @Override
@@ -68,7 +63,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<BookDto> search(BookFilterRequest filterRequest) {
+    public Page<Book> search(BookFilterRequest filterRequest) {
         BooleanBuilder predicate = new BooleanBuilder();
 
         if (filterRequest.getSearchRequest().getCategories() != null) {
@@ -88,13 +83,12 @@ public class BookServiceImpl implements BookService {
         Integer pageNumber = filterRequest.getPageRequest().getPageNumber();
         PageRequest page = PageRequest.of(pageNumber, size);
 
-        return bookRepository.findAll(predicate, page)
-                .map(bookMapper::toDto);
+        return bookRepository.findAll(predicate, page);
     }
 
     @Override
-    public Page<BookDto> searchAuthor(BookFilterRequest filterRequestForAuthor) {
-
-        return null;
+    public Book updateStudent(Book book, Student student) {
+        book.setStudent(student);
+        return bookRepository.save(book);
     }
 }

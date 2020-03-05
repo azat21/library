@@ -25,4 +25,8 @@ public class Book extends BaseEntity {
 
     @Column(name = "quantity")
     private Integer quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
 }

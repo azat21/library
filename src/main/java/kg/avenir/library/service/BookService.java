@@ -1,22 +1,24 @@
 package kg.avenir.library.service;
 
-import kg.avenir.library.dto.book.BookDto;
-import kg.avenir.library.dto.book.UpdateBookQuantityDto;
 import kg.avenir.library.entity.Author;
 import kg.avenir.library.entity.Book;
+import kg.avenir.library.entity.Student;
 import kg.avenir.library.filterRequest.book.BookFilterRequest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
 public interface BookService {
-    void updateQuantity(Long id, UpdateBookQuantityDto dto);
-    List<BookDto> findAll();
+    @Transactional
+    void updateQuantity(Long id, Integer quantity);
+
+    List<Book> findAll();
     List<Book> findAllById(List<Long> ids);
     Book updateAuthor(Book book, Author author);
     List<Book> getBooksByAuthor(Author author);
-    Page<BookDto> search(BookFilterRequest filterRequest);
-    Page<BookDto> searchAuthor (BookFilterRequest filterRequestForAuthor);
+    Page<Book> search(BookFilterRequest filterRequest);
+
+    Book updateStudent(Book book, Student student);
 }

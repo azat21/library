@@ -1,4 +1,5 @@
-package kg.avenir.library.service;
+package kg.avenir.library.endpoint.author;
+
 
 import kg.avenir.library.dto.author.AuthorDto;
 import kg.avenir.library.dto.book.BookIdsDto;
@@ -8,14 +9,11 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public interface AuthorService {
+public interface AuthorEndPoint {
+    List<AuthorDto> findAll();
+    AuthorDto findById(Long id);
     void bindBooksWithAuthor(Long id, BookIdsDto dto);
-
-    List<Author> findAll();
-
     Page<AuthorDto> search(AuthorFilterRequest filterRequest);
-
-    Author getById(Long id);
 
 
 }

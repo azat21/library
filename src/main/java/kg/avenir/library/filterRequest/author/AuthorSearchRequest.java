@@ -10,11 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class AuthorSearchRequest {
-    @NotNull
-    @NotBlank
-    private String searchRequest;
-    @NotNull
-    private LocalDate min;
-    @NotNull
-    private LocalDate max;
+    private String searchString;
+    private LocalDate birthDateMin;
+    private LocalDate birthDateMax;
 }
